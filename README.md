@@ -1,8 +1,9 @@
 ﻿### Ответ на Вопрос №3:
 
-```sql
-SELECT p.Name AS ProductName, ISNULL(c.Name, 'Отсутствует') AS CategoryName
-FROM Products p
-LEFT JOIN ProductsCategories pc ON pc.ProductId = p.Id 
-LEFT JOIN Categories c ON pc.CategoryId = c.Id
+```python
+res = product_category_pairs.join(products, on='product_id', how='right') \
+    .join(categories, on='category_id', how='left') \
+    .select('product_name',
+            when(col('category_name').isNull(), 'отсутствует').otherwise(col('category_name')).alias("category_name"))
+
 ```
